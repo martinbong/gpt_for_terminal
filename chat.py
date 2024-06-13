@@ -26,7 +26,9 @@ def chat_with_gpt():
         )
 
         ai_response = response.choices[0].message.content
-        print(f"{ai_response}")
+        print("________________________________________________________________________________________________________________________________________")
+        print(f"GPT: {ai_response}")
+        print("________________________________________________________________________________________________________________________________________")
 
         conversation_history.append({"role": "assistant", "content": ai_response})
 
