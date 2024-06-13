@@ -1,4 +1,4 @@
-# To allow this project to work by simply typing 'chat' in Tillix (zsh) the following things need to be done:
+# To allow this project to work by simply typing 'chat' in Tilix (zsh) the following things need to be done:
 
 **Make sure the correct dependencies are installed in the virtual environment**
 > source .venv/bin/activate  
@@ -19,7 +19,7 @@ Add keys to .env:
 
 > chmod +x ~/Dev/python/gpt_for_terminal/start_mastermind.sh  
 
-**Make Tillix main terminal so it can open using ctrl + alt + t**
+**Make Tilix main terminal so it can open using ctrl + alt + t**
 > sudo update-alternatives --config x-terminal-emulator  
 
 **Edit ZSH file to create a path to call function from anywhere**
@@ -34,7 +34,7 @@ Add to .zshrc:
 Initialize changes:
 > source ~/.zshrc  
 
-**Run chat, Quit chat, and Quit chat + Deleting converstation history**
+**Run chat, Quit chat, and Quit chat + Deleting conversation history**
 > chat  
 > x  
 > xx  
