@@ -33,6 +33,9 @@ def delete_conversation_history():
 def chat_with_gpt():
     conversation_history = load_conversation_history()
 
+    welcome_message = "You can chat now! ('x' = quit and 'xx' = quit + delete conversation history)"
+    print(welcome_message)
+
     while True:
         user_input = input("> ")
         if user_input.lower() == "x":
