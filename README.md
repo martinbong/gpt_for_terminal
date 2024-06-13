@@ -12,7 +12,7 @@ Add keys to .env:
 > export AZURE_OPENAI_API_KEY="KEY"  
 > export AZURE_OPENAI_ENDPOINT="URL"  
 
-**Make all .sh files are executable**
+**Make all .sh files executable**
 > chmod +x ~/Dev/python/gpt_for_terminal/start_chat.sh  
 > chmod +x ~/Dev/python/gpt_for_terminal/activate_env.sh  
 > chmod +x ~/Dev/python/gpt_for_terminal/deactivate_env.sh  
@@ -27,5 +27,10 @@ Add to .zshrc:
 > export PATH="$PATH:/home/martin/Dev/python/gpt_for_terminal"  
 > alias "chat"="~/Dev/python/gpt_for_terminal/start_chat.sh"  
 
-Run:
-> source ~/.zshrc
+Initialize changes:
+> source ~/.zshrc  
+
+**Run chat, Quit chat, and Quit chat + Deleting converstation history**
+> chat  
+> x  
+> xx  

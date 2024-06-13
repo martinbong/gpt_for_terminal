@@ -1,4 +1,5 @@
 import os
+import json
 from openai import AzureOpenAI
 
 # Initialize the Azure OpenAI client
@@ -8,14 +9,37 @@ client = AzureOpenAI(
     api_version="2024-02-01"
 )
 
+# Path to store the conversation history
+history_file = "conversation_history.json"
+
+# Function to load conversation history
+def load_conversation_history():
+    if os.path.exists(history_file):
+        with open(history_file, "r") as file:
+            return json.load(file)
+    return [{"role": "system", "content": "You are a helpful assistant who is a computer expert, that always aims to provide the to the point and concise answer possible. Whenever the question is about a 'command', assume the tillix terminal using zsh and when a question is about a 'shortcut', assume ubuntu, unless specified otherwise."}]
+
+# Function to save conversation history
+def save_conversation_history(history):
+    with open(history_file, "w") as file:
+        json.dump(history, file)
+
+# Function to delete conversation history
+def delete_conversation_history():
+    if os.path.exists(history_file):
+        os.remove(history_file)
 
 # Function to interact with the GPT model
 def chat_with_gpt():
-    conversation_history = [{"role": "system", "content": "You are a helpful assistant who is a computer expert, that always aims to provide the to the point and concise answer possible. Whenever the question is about a 'command', assume the tillix terminal using zsh and when a question is about a 'shortcut', assume ubuntu, unless specified otherwise."}]
+    conversation_history = load_conversation_history()
 
     while True:
         user_input = input("> ")
         if user_input.lower() == "x":
+            save_conversation_history(conversation_history)
+            break
+        elif user_input.lower() == "xx":
+            delete_conversation_history()
             break
 
         conversation_history.append({"role": "user", "content": user_input})
