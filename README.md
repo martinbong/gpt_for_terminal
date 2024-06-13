@@ -12,10 +12,12 @@ Add keys to .env:
 > export AZURE_OPENAI_API_KEY="KEY"  
 > export AZURE_OPENAI_ENDPOINT="URL"  
 
-**Make all .sh files executable**
+**Make all .sh files executable (replace '+' by '-' to undo)**
 > chmod +x ~/Dev/python/gpt_for_terminal/start_chat.sh  
 > chmod +x ~/Dev/python/gpt_for_terminal/activate_env.sh  
 > chmod +x ~/Dev/python/gpt_for_terminal/deactivate_env.sh  
+
+> chmod +x ~/Dev/python/gpt_for_terminal/start_mastermind.sh  
 
 **Make Tillix main terminal so it can open using ctrl + alt + t**
 > sudo update-alternatives --config x-terminal-emulator  
@@ -25,7 +27,9 @@ Add keys to .env:
 
 Add to .zshrc:
 > export PATH="$PATH:/home/martin/Dev/python/gpt_for_terminal"  
-> alias "chat"="~/Dev/python/gpt_for_terminal/start_chat.sh"  
+> alias "chat"="~/Dev/python/gpt_for_terminal/start_chat.sh" 
+
+> alias "mastermind"="~/Dev/python/gpt_for_terminal/start_mastermind.sh"  
 
 Initialize changes:
 > source ~/.zshrc  
@@ -34,3 +38,6 @@ Initialize changes:
 > chat  
 > x  
 > xx  
+
+> mastermind  
+> x  
