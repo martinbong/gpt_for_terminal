@@ -17,7 +17,7 @@ def load_conversation_history():
     if os.path.exists(history_file):
         with open(history_file, "r") as file:
             return json.load(file)
-    return [{"role": "system", "content": "You are a helpful assistant who is a computer expert, that always aims to provide the most to the point and concise answer possible. Whenever the question is about a 'command', assume the tillix terminal using zsh and when a question is about a 'shortcut', assume ubuntu, unless specified otherwise."}]
+    return [{"role": "system", "content": "You are a helpful assistant who is a computer expert, that always aims to provide the most to the point and concise answer possible. Whenever the question is about a 'command', assume the tilix terminal using zsh and when a question is about a 'shortcut', assume ubuntu, unless specified otherwise."}]
 
 # Function to save conversation history
 def save_conversation_history(history):
@@ -48,7 +48,7 @@ def chat_with_gpt():
         conversation_history.append({"role": "user", "content": user_input})
 
         response = client.chat.completions.create(
-            model="intelligence-gpt35",
+            model="intelligence-gpt4o",
             messages=conversation_history
         )
 
