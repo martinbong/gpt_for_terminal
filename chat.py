@@ -8,6 +8,12 @@ import threading
 import select
 from openai import AzureOpenAI
 
+system_prompt = (
+    "You are a helpful assistant who is a computer expert, that always aims to provide the most to the point and concise, yet detailed answer possible. For context: I run ubuntu, and prefer doing things with terminal (zsh shell, and I use tilix) directly, pycharm, and vscode."
+)
+
+opening_message = "You can chat now! ('x' = quit, 'xx' = quit + delete history)"
+
 client = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
@@ -20,10 +26,7 @@ def load_conversation_history():
     if os.path.exists(history_file):
         with open(history_file, "r") as file:
             return json.load(file)
-    return [{
-        "role": "system",
-        "content": "You are a helpful assistant who is a computer expert, that always aims to provide the most to the point and concise answer possible. Whenever the question is about a 'command', assume the tilix terminal using zsh and when a question is about a 'shortcut', assume ubuntu, unless specified otherwise."
-    }]
+    return [{"role": "system", "content": system_prompt}]
 
 def save_conversation_history(history):
     with open(history_file, "w") as file:
@@ -47,7 +50,7 @@ def flush_input():
         os.read(sys.stdin.fileno(), 1024)
 
 class Spinner:
-    def __init__(self, message="Thinking..."):
+    def __init__(self, message="Thinking"):
         self.spinner_chars = ['|', '/', '-', '\\']
         self.running = False
         self.thread = None
@@ -99,15 +102,18 @@ def read_full_input(prompt="> "):
         else:
             break
 
-    # Reset terminal color after input
     os.write(sys.stdout.fileno(), RESET.encode())
-
     return "".join(buffer).strip()
-
 
 def chat_with_gpt():
     conversation_history = load_conversation_history()
-    print("You can chat now! ('x' = quit, 'xx' = quit + delete history)")
+    try:
+        width = os.get_terminal_size().columns
+    except OSError:
+        width = 80
+
+    print(opening_message)
+    print('─' * width)
 
     while True:
         user_input = read_full_input("> ")
@@ -132,7 +138,8 @@ def chat_with_gpt():
         try:
             response = client.chat.completions.create(
                 model="intelligence-gpt4o",
-                messages=conversation_history
+                messages=conversation_history,
+                temperature=0.3
             )
         finally:
             spinner.stop()
@@ -141,11 +148,6 @@ def chat_with_gpt():
 
         ai_response = response.choices[0].message.content.strip()
         print(f"\033[92m{ai_response}\033[0m")
-
-        try:
-            width = os.get_terminal_size().columns
-        except OSError:
-            width = 80
         print('─' * width)
 
         conversation_history.append({"role": "assistant", "content": ai_response})
