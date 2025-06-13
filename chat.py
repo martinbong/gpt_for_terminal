@@ -74,8 +74,13 @@ class Spinner:
         sys.stdout.flush()
 
 def read_full_input(prompt="> "):
-    sys.stdout.write(prompt)
+    WHITE = "\033[97m"
+    RESET = "\033[0m"
+    sys.stdout.write(f"{WHITE}{prompt}")
     sys.stdout.flush()
+
+    os.write(sys.stdout.fileno(), WHITE.encode())
+
     buffer = []
     fd = sys.stdin.fileno()
 
@@ -94,7 +99,11 @@ def read_full_input(prompt="> "):
         else:
             break
 
+    # Reset terminal color after input
+    os.write(sys.stdout.fileno(), RESET.encode())
+
     return "".join(buffer).strip()
+
 
 def chat_with_gpt():
     conversation_history = load_conversation_history()
@@ -132,6 +141,13 @@ def chat_with_gpt():
 
         ai_response = response.choices[0].message.content.strip()
         print(f"\033[92m{ai_response}\033[0m")
+
+        try:
+            width = os.get_terminal_size().columns
+        except OSError:
+            width = 80
+        print('─' * width)
+
         conversation_history.append({"role": "assistant", "content": ai_response})
 
 if __name__ == "__main__":
